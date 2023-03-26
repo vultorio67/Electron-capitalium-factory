@@ -1,5 +1,6 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
+const ejse                              = require('ejs-electron')
 
 app.whenReady().then(() => createWindow());
 
@@ -15,13 +16,26 @@ function createWindow() {
         webPreferences: {
             preload: path.join(__dirname, 'app', 'assets', 'js', 'preloader.js'),
             nodeIntegration: true,
-            contextIsolation: false
+            contextIsolation: false,
         },
         backgroundColor: '#171614'
 
     });
 
-    mainwindow.loadURL(path.join(__dirname,"src/index.html")) 
+    //ejse.data('bkid', Math.floor((Math.random() * fs.readdirSync(path.join(__dirname, 'app', 'assets', 'images', 'backgrounds')).length)))
+
+    //win.loadURL(pathToFileURL(path.join(__dirname, 'app', 'app.ejs')).toString())
+
+
+    //mainWindow.loadURL('file://' + __dirname + 'app.ejs')
+    /*win.once('ready-to-show', () => {
+        win.show()
+    })*/
+
+    ejse.data('username', 'Some Guy')
+
+
+    mainwindow.loadURL(path.join(__dirname,"src/app.ejs")) 
 }
 
 
