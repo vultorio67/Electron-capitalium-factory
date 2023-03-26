@@ -1,5 +1,5 @@
 {
-  "name": "electron-quick-start",
+  "name": "capitalium-factory-launcher",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -78,10 +78,6 @@
     "ecc-jsbn": "^0.1.2",
     "ejs": "^3.1.9",
     "ejs-electron": "^2.1.1",
-    "electron": "^23.2.0",
-    "electron-builder": "^23.6.0",
-    "electron-osx-sign": "^0.6.0",
-    "electron-publish": "^23.6.0",
     "emoji-regex": "^8.0.0",
     "end-of-stream": "^1.4.4",
     "env-paths": "^2.2.1",
@@ -246,8 +242,16 @@
     "yauzl": "^2.10.0"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder build"
   },
   "author": "vultorio",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "electron-packager": "^17.1.1",
+    "electron": "^23.2.0",
+    "electron-builder": "^23.6.0",
+    "electron-osx-sign": "^0.6.0",
+    "electron-publish": "^23.6.0"
+  }
 }

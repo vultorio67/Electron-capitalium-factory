@@ -2,9 +2,8 @@
 <head>
     <meta charset="utf-8" http-equiv="Content-Security-Policy" content="script-src 'self' 'sha256-In6B8teKZQll5heMl9bS7CESTbGvuAt3VVV86BUQBDk='"/>
     <title>Helios Launcher</title>
-    <script src="./assets/js/scripts/uicore.js"></script>
-    <script src="./assets/js/scripts/uibinder.js"></script>
-    <link type="text/css" rel="stylesheet" href="./assets/css/launcher.css">
+    <script src="./js/app.js"></script>
+    <link type="text/css" rel="stylesheet" href="./styles/launcher.css">
     <style>
         body {
             transition: background-image 1s ease;
@@ -13,9 +12,9 @@
             -webkit-user-select: none;
         }
         #main {
-            display: none;
+            display: flex;
             height: calc(100% - 22px);
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(21, 20, 0, 0) 100%);
             width: 100%;
             position: absolute;
             z-index: 10;
@@ -28,6 +27,7 @@
 <body>
     <%- include('frame') %>
     <div id="main">
+        <%- include('welcome') %>
 
     </div>
 
@@ -39,11 +39,5 @@
             </div>
         </div>
     </div>
-    <script>
-        // Load language
-        for(let key of Object.keys(Lang.query('html'))){
-            document.getElementById(key).innerHTML = Lang.query(`html.${key}`)
-        }
-    </script>
 </body>
 </html>
