@@ -1,6 +1,8 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 const ejse                              = require('ejs-electron')
+const keyevents = require('key-events') // Also at window.keyevents.
+
 
 app.whenReady().then(() => createWindow());
 
@@ -74,17 +76,9 @@ app.on('window-all-closed', () => {
 });
 
 
-const readline = require('readline');
- 
-readline.emitKeypressEvents(process.stdin);
-if (process.stdin.isTTY) process.stdin.setRawMode(true);
+var keys = keyevents() 
 
-console.log(readline)
- 
-// listen to keypress
- 
-process.stdin.on("keypress", (str, key) => {
-    console.log("press")
-    if(key.ctrl && key.name == "s") console.log("save")
-})
-
+keys.on("keydown", function(key, event) {
+    console.log(key)   // A vkey value based on the key pressed.
+    console.log(event) // The original event received.
+})  

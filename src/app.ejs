@@ -2,6 +2,8 @@
 <head>
     <meta charset="utf-8" http-equiv="Content-Security-Policy" content="script-src 'self' 'sha256-In6B8teKZQll5heMl9bS7CESTbGvuAt3VVV86BUQBDk='"/>
     <title>Helios Launcher</title>
+    <!-- allowed by 'self' -->
+    <script src="./js/UIUtils.js"></script>
     <script src="./js/app.js"></script>
     <link type="text/css" rel="stylesheet" href="./styles/launcher.css">
     <style>
@@ -28,6 +30,7 @@
     <%- include('frame') %>
     <div id="main">
         <%- include('welcome') %>
+        <%- include('loginAsk') %>
 
     </div>
 

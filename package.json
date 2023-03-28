@@ -147,6 +147,7 @@
     "json5": "^2.2.3",
     "jsonfile": "^4.0.0",
     "jsprim": "^1.4.2",
+    "key-events": "^0.1.1",
     "keyv": "^4.5.2",
     "lazy-val": "^1.0.5",
     "lodash": "^4.17.21",
@@ -248,10 +249,10 @@
   "author": "vultorio",
   "license": "ISC",
   "devDependencies": {
-    "electron-packager": "^17.1.1",
     "electron": "^23.2.0",
     "electron-builder": "^23.6.0",
     "electron-osx-sign": "^0.6.0",
+    "electron-packager": "^17.1.1",
     "electron-publish": "^23.6.0"
   }
 }
