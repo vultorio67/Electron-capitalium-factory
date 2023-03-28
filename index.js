@@ -24,7 +24,7 @@ function createWindow() {
 
     });
 
-    //mainwindow.webContents.openDevTools()
+    mainwindow.webContents.openDevTools()
 
     ipcMain.on("close-app", () => {
         mainwindow.close();
@@ -72,3 +72,19 @@ app.on("activate", () =>{
 app.on('window-all-closed', () => {
     app.quit();
 });
+
+
+const readline = require('readline');
+ 
+readline.emitKeypressEvents(process.stdin);
+if (process.stdin.isTTY) process.stdin.setRawMode(true);
+
+console.log(readline)
+ 
+// listen to keypress
+ 
+process.stdin.on("keypress", (str, key) => {
+    console.log("press")
+    if(key.ctrl && key.name == "s") console.log("save")
+})
+
