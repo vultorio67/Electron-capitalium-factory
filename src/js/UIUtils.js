@@ -2,15 +2,12 @@ const $                              = require('jquery')
 
 const VIEWS = {
     welcome: "#welcome",
-    login_ask: "#loginAsk"
+    login_ask: "#loginask",
+    wait: "#wait"
 }
 
 // The currently shown view container.
 let currentView
-
-for (const element of VIEWS) {
-    console.log(element);
-  }
 
 function switchView(current, next, currentFadeTime = 500, nextFadeTime = 500, onCurrentFade = () => {}, onNextFade = () => {}){
     currentView = next
@@ -29,3 +26,11 @@ function switchView(current, next, currentFadeTime = 500, nextFadeTime = 500, on
 function getCurrentView(){
     return currentView
 }
+
+function sleep (time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+  
+
+
+

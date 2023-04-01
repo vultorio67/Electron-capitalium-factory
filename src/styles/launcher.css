@@ -984,18 +984,18 @@ body, button {
 .loginOptionActions {
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
+    row-gap: 15px;
 }
 
 .loginOptionButtonContainer {
-    width: 16em;
+    width: 23em;
 }
 
 .loginOptionButton {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(126, 126, 126, 0.57);
     border-radius: 3px;
-    height: 50px;
+    height: 70px;
     width: 100%;
     text-align: left;
     padding: 0px 25px;
@@ -1005,11 +1005,17 @@ body, button {
     display: flex;
     align-items: center;
     column-gap: 5px;
+    transition: all 1s;
 }
 .loginOptionButton:hover,
 .loginOptionButton:focus {
     background: rgba(54, 54, 54, 0.25);
-    text-shadow: 0px 0px 20px white;
+    text-shadow: 0px 1px 20px rgb(255, 197, 82);
+    scale: 1.02;
+}
+
+.loginOptionButton:active {
+    box-shadow: 0px 10px 20px rgb(255, 255, 255);
 }
 
 #loginOptionCancelContainer {
@@ -4032,3 +4038,165 @@ input:checked + .toggleSwitchSlider:before {
 
 
 
+/* 
+
+waiting !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+*/
+
+
+.tetrominos {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-112px, -96px);
+  }
+  
+  .tetromino {
+    width: 96px;
+    height: 112px;
+    position: absolute;
+    transition: all ease 0.3s;
+    background: url('data:image/svg+xml;utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 684"%3E%3Cpath fill="%23540101" d="M305.7 0L0 170.9v342.3L305.7 684 612 513.2V170.9L305.7 0z"/%3E%3Cpath fill="%23fff" d="M305.7 80.1l-233.6 131 233.6 131 234.2-131-234.2-131"/%3E%3C/svg%3E') no-repeat top center;
+  }
+  
+  .box1 {
+    -webkit-animation: tetromino1 1.5s ease-out infinite;
+            animation: tetromino1 1.5s ease-out infinite;
+  }
+  
+  .box2 {
+    -webkit-animation: tetromino2 1.5s ease-out infinite;
+            animation: tetromino2 1.5s ease-out infinite;
+  }
+  
+  .box3 {
+    -webkit-animation: tetromino3 1.5s ease-out infinite;
+            animation: tetromino3 1.5s ease-out infinite;
+    z-index: 2;
+  }
+  
+  .box4 {
+    -webkit-animation: tetromino4 1.5s ease-out infinite;
+            animation: tetromino4 1.5s ease-out infinite;
+  }
+  
+  @-webkit-keyframes tetromino1 {
+    0%, 40% {
+      /* compose logo */
+      /* 1 on 3 */
+      /* L-shape */
+      transform: translate(0, 0);
+    }
+    50% {
+      /* pre-box */
+      transform: translate(48px, -27px);
+    }
+    60%, 100% {
+      /* box */
+      /* compose logo */
+      transform: translate(96px, 0);
+    }
+  }
+  
+  @keyframes tetromino1 {
+    0%, 40% {
+      /* compose logo */
+      /* 1 on 3 */
+      /* L-shape */
+      transform: translate(0, 0);
+    }
+    50% {
+      /* pre-box */
+      transform: translate(48px, -27px);
+    }
+    60%, 100% {
+      /* box */
+      /* compose logo */
+      transform: translate(96px, 0);
+    }
+  }
+  @-webkit-keyframes tetromino2 {
+    0%, 20% {
+      /* compose logo */
+      /* 1 on 3 */
+      transform: translate(96px, 0px);
+    }
+    40%, 100% {
+      /* L-shape */
+      /* box */
+      /* compose logo */
+      transform: translate(144px, 27px);
+    }
+  }
+  @keyframes tetromino2 {
+    0%, 20% {
+      /* compose logo */
+      /* 1 on 3 */
+      transform: translate(96px, 0px);
+    }
+    40%, 100% {
+      /* L-shape */
+      /* box */
+      /* compose logo */
+      transform: translate(144px, 27px);
+    }
+  }
+  @-webkit-keyframes tetromino3 {
+    0% {
+      /* compose logo */
+      transform: translate(144px, 27px);
+    }
+    20%, 60% {
+      /* 1 on 3 */
+      /* L-shape */
+      /* box */
+      transform: translate(96px, 54px);
+    }
+    90%, 100% {
+      /* compose logo */
+      transform: translate(48px, 27px);
+    }
+  }
+  @keyframes tetromino3 {
+    0% {
+      /* compose logo */
+      transform: translate(144px, 27px);
+    }
+    20%, 60% {
+      /* 1 on 3 */
+      /* L-shape */
+      /* box */
+      transform: translate(96px, 54px);
+    }
+    90%, 100% {
+      /* compose logo */
+      transform: translate(48px, 27px);
+    }
+  }
+  @-webkit-keyframes tetromino4 {
+    0%, 60% {
+      /* compose logo */
+      /* 1 on 3 */
+      /* L-shape */
+      /* box */
+      transform: translate(48px, 27px);
+    }
+    90%, 100% {
+      /* compose logo */
+      transform: translate(0, 0);
+    }
+  }
+  @keyframes tetromino4 {
+    0%, 60% {
+      /* compose logo */
+      /* 1 on 3 */
+      /* L-shape */
+      /* box */
+      transform: translate(48px, 27px);
+    }
+    90%, 100% {
+      /* compose logo */
+      transform: translate(0, 0);
+    }
+  }

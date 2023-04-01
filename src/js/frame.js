@@ -1,5 +1,3 @@
-const { ipcRenderer } = require('electron')
-
 const close    = document.getElementById('frameButton_close')
 const restore    = document.getElementById('frameButton_restoredown')
 const minimize    = document.getElementById('frameButton_minimize')
