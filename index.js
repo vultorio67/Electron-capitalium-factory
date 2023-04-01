@@ -35,7 +35,7 @@ function createWindow() {
 
     });
 
-    //mainwindow.webContents.openDevTools()
+    mainwindow.webContents.openDevTools()
 
     ipcMain.on("close-app", () => {
         mainwindow.close();
@@ -76,11 +76,14 @@ function createWindow() {
 
 ////////// connexion microsoft
 
+
+// Microsoft Auth Login
 let msftAuthWindow
 let msftAuthSuccess
 let msftAuthViewSuccess
 let msftAuthViewOnClose
-ipcMain.on("open", (ipcEvent, ...arguments_) => {
+ipcMain.on(MSFT_OPCODE.OPEN_LOGIN, (ipcEvent, ...arguments_) => {
+    console.log("start")
     if (msftAuthWindow) {
         ipcEvent.reply(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.ERROR, MSFT_ERROR.ALREADY_OPEN, msftAuthViewOnClose)
         return
@@ -103,8 +106,7 @@ ipcMain.on("open", (ipcEvent, ...arguments_) => {
     msftAuthWindow.on('close', () => {
         if(!msftAuthSuccess) {
             ipcEvent.reply(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.ERROR, MSFT_ERROR.NOT_FINISHED, msftAuthViewOnClose)
-            console.log(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.SUCCESS, queryMap, msftAuthViewSuccess)
-
+            console.log(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.ERROR, MSFT_ERROR.NOT_FINISHED, msftAuthViewOnClose)
         }
     })
 
@@ -119,7 +121,7 @@ ipcMain.on("open", (ipcEvent, ...arguments_) => {
             })
 
             ipcEvent.reply(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.SUCCESS, queryMap, msftAuthViewSuccess)
-            console.log(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.SUCCESS, queryMap, msftAuthViewSuccess)
+            console.log(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.ERROR, MSFT_ERROR.NOT_FINISHED, msftAuthViewOnClose)
 
             msftAuthSuccess = true
             msftAuthWindow.close()
@@ -128,7 +130,7 @@ ipcMain.on("open", (ipcEvent, ...arguments_) => {
     })
 
     msftAuthWindow.removeMenu()
-    msftAuthWindow.loadURL(`https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?prompt=select_account&client_id=${CLIENT_ID}&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=https://github.com/vultorio67/alpha67-downloader`)
+    msftAuthWindow.loadURL(`https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?prompt=select_account&client_id=${CLIENT_ID}&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=${REDIRECT_URL}`)
 })
 
 
