@@ -3,7 +3,8 @@ const $                              = require('jquery')
 const VIEWS = {
     welcome: "#welcome",
     login_ask: "#loginask",
-    wait: "#wait"
+    wait: "#wait",
+    base: "#base"
 }
 
 // The currently shown view container.

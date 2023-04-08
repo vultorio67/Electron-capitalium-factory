@@ -4,7 +4,7 @@ const crack    = document.getElementById('loginOptionCrack')
 microsoft.onclick = (e) => {
     switchView(getCurrentView(), VIEWS.wait)
     setTimeout(function(){
-        ipc.sendSync(MSFT_OPCODE.OPEN_LOGIN)
+        ipc.send(MSFT_OPCODE.OPEN_LOGIN)
     }, 1000);
     
 }

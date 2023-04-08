@@ -3,18 +3,17 @@ const path = require('path')
 const ejse                              = require('ejs-electron')
 const keyevents = require('key-events') // Also at window.keyevents.
 
-const { AZURE_CLIENT_ID, MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR, SHELL_OPCODE } = require('./src/js/ipcconstants')
+const { MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR, SHELL_OPCODE } = require('./src/js/ipcconstants')
 
 
-app.whenReady().then(() => createWindow());
-
-let mainwindow
 
 
-CLIENT_ID = "f2107422-b90b-46cf-9d04-3dd3da989b44"
-SECRET = "I1G7Q~5IgcJGmIvT-jCzseZTZ2u6d8rJOf0cw"
-REDIRECT_URL = "https://github.com/vultorio67/alpha67-downloader"
 
+const AZURE_CLIENT_ID = '1ce6e35a-126f-48fd-97fb-54d143ac6d45'
+const REDIRECT_URI_PREFIX = 'https://login.microsoftonline.com/common/oauth2/nativeclient?'
+
+
+app.disableHardwareAcceleration()
 
 
 //////// fenêtre principale
@@ -27,7 +26,7 @@ function createWindow() {
         minHeight: 260,
         frame: false,
         webPreferences: {
-            preload: path.join(__dirname, 'app', 'assets', 'js', 'preloader.js'),
+            preload: path.join(__dirname, 'preloader.js'),
             nodeIntegration: true,
             contextIsolation: false,
         },
@@ -35,6 +34,7 @@ function createWindow() {
 
     });
 
+    
     mainwindow.webContents.openDevTools()
 
     ipcMain.on("close-app", () => {
@@ -83,20 +83,12 @@ let msftAuthSuccess
 let msftAuthViewSuccess
 let msftAuthViewOnClose
 ipcMain.on(MSFT_OPCODE.OPEN_LOGIN, (ipcEvent, ...arguments_) => {
-    console.log("start")
-    if (msftAuthWindow) {
-        ipcEvent.reply(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.ERROR, MSFT_ERROR.ALREADY_OPEN, msftAuthViewOnClose)
-        return
-    }
-    msftAuthSuccess = false
-    msftAuthViewSuccess = arguments_[0]
-    msftAuthViewOnClose = arguments_[1]
     msftAuthWindow = new BrowserWindow({
         title: 'Microsoft Login',
         backgroundColor: '#222222',
         width: 520,
         height: 600,
-        frame: true,
+        frame: true
     })
 
     msftAuthWindow.on('closed', () => {
@@ -105,14 +97,14 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGIN, (ipcEvent, ...arguments_) => {
 
     msftAuthWindow.on('close', () => {
         if(!msftAuthSuccess) {
+            console.log("error")
             ipcEvent.reply(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.ERROR, MSFT_ERROR.NOT_FINISHED, msftAuthViewOnClose)
-            console.log(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.ERROR, MSFT_ERROR.NOT_FINISHED, msftAuthViewOnClose)
         }
     })
 
     msftAuthWindow.webContents.on('did-navigate', (_, uri) => {
-        if (uri.startsWith(REDIRECT_URL)) {
-            let queries = uri.substring(REDIRECT_URL.length).split('#', 1).toString().split('&')
+        if (uri.startsWith(REDIRECT_URI_PREFIX)) {
+            let queries = uri.substring(REDIRECT_URI_PREFIX.length).split('#', 1).toString().split('&')
             let queryMap = {}
 
             queries.forEach(query => {
@@ -120,35 +112,28 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGIN, (ipcEvent, ...arguments_) => {
                 queryMap[name] = decodeURI(value)
             })
 
+            console.log("::::::::::::::::::::::::::::")
+
             ipcEvent.reply(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.SUCCESS, queryMap, msftAuthViewSuccess)
-            console.log(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.ERROR, MSFT_ERROR.NOT_FINISHED, msftAuthViewOnClose)
+
 
             msftAuthSuccess = true
-            msftAuthWindow.close()
+            msftAuthWindow.close();
             msftAuthWindow = null
         }
     })
 
     msftAuthWindow.removeMenu()
-    msftAuthWindow.loadURL(`https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?prompt=select_account&client_id=${CLIENT_ID}&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=${REDIRECT_URL}`)
+    msftAuthWindow.loadURL(`https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?prompt=select_account&client_id=${AZURE_CLIENT_ID}&response_type=code&scope=XboxLive.signin%20offline_access&redirect_uri=https://login.microsoftonline.com/common/oauth2/nativeclient?`)
 })
 
 
-app.on("activate", () =>{
-    if(mainwindow == null)
-    {
-        createWindow();
-    }
-});
+app.whenReady().then(() => {
+    createWindow()
+  })
 
 app.on('window-all-closed', () => {
     app.quit();
 });
 
 
-var keys = keyevents() 
-
-keys.on("keydown", function(key, event) {
-    console.log(key)   // A vkey value based on the key pressed.
-    console.log(event) // The original event received.
-})  

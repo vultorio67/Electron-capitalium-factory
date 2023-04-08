@@ -15,8 +15,11 @@ const { LoggerUtil }         = require('helios-core')
 //const { MojangRestAPI, mojangErrorDisplayable, MojangErrorCode } = require('helios-core/mojang')
 const { MicrosoftAuth, microsoftErrorDisplayable, MicrosoftErrorCode } = require('helios-core/microsoft')
 const { AZURE_CLIENT_ID }    = require('../ipcconstants')
+const { data } = require('jquery')
 
 const log = LoggerUtil.getLogger('AuthManager')
+
+const datastorage = require('./dataStorage')
 
 // Functions
 
@@ -70,38 +73,27 @@ const AUTH_MODE = { FULL: 0, MS_REFRESH: 1, MC_REFRESH: 2 }
  * @param {*} authMode The auth mode.
  * @returns An object with all auth data. AccessToken object will be null when mode is MC_REFRESH.
  */
-async function fullMicrosoftAuthFlow(entryCode, authMode) {
+async function fullMicrosoftAuthFlow(authCode) {
     try {
 
-        let accessTokenRaw
-        let accessToken
-        if(authMode !== AUTH_MODE.MC_REFRESH) {
-            const accessTokenResponse = await MicrosoftAuth.getAccessToken(entryCode, authMode === AUTH_MODE.MS_REFRESH, AZURE_CLIENT_ID)
-            if(accessTokenResponse.responseStatus === RestResponseStatus.ERROR) {
-                return Promise.reject(microsoftErrorDisplayable(accessTokenResponse.microsoftErrorCode))
-            }
-            accessToken = accessTokenResponse.data
-            accessTokenRaw = accessToken.access_token
-        } else {
-            accessTokenRaw = entryCode
-        }
-        
+        console.log(authCode)
+        const accessTokenResponse = await MicrosoftAuth.getAccessToken(authCode, false, "1ce6e35a-126f-48fd-97fb-54d143ac6d45")
+    
+        console.log(accessTokenResponse)
+    
+        accessToken = accessTokenResponse.data
+        accessTokenRaw = accessToken.access_token
+    
         const xblResponse = await MicrosoftAuth.getXBLToken(accessTokenRaw)
-        if(xblResponse.responseStatus === RestResponseStatus.ERROR) {
-            return Promise.reject(microsoftErrorDisplayable(xblResponse.microsoftErrorCode))
-        }
+    
         const xstsResonse = await MicrosoftAuth.getXSTSToken(xblResponse.data)
-        if(xstsResonse.responseStatus === RestResponseStatus.ERROR) {
-            return Promise.reject(microsoftErrorDisplayable(xstsResonse.microsoftErrorCode))
-        }
+    
         const mcTokenResponse = await MicrosoftAuth.getMCAccessToken(xstsResonse.data)
-        if(mcTokenResponse.responseStatus === RestResponseStatus.ERROR) {
-            return Promise.reject(microsoftErrorDisplayable(mcTokenResponse.microsoftErrorCode))
-        }
+    
         const mcProfileResponse = await MicrosoftAuth.getMCProfile(mcTokenResponse.data.access_token)
-        if(mcProfileResponse.responseStatus === RestResponseStatus.ERROR) {
-            return Promise.reject(microsoftErrorDisplayable(mcProfileResponse.microsoftErrorCode))
-        }
+    
+        console.log(mcTokenResponse)
+    
         return {
             accessToken,
             accessTokenRaw,
@@ -110,6 +102,8 @@ async function fullMicrosoftAuthFlow(entryCode, authMode) {
             mcToken: mcTokenResponse.data,
             mcProfile: mcProfileResponse.data
         }
+
+
     } catch(err) {
         log.error(err)
         return Promise.reject(microsoftErrorDisplayable(MicrosoftErrorCode.UNKNOWN))
@@ -137,16 +131,22 @@ function calculateExpiryDate(nowMs, epiresInS) {
  */
 exports.addMicrosoftAccount = async function(authCode) {
 
-    const fullAuth = await fullMicrosoftAuthFlow(authCode, AUTH_MODE.FULL)
+
+    const fullAuth = await fullMicrosoftAuthFlow(authCode)
 
     // Advance expiry by 10 seconds to avoid close calls.
     const now = new Date().getTime()
 
-    console.log(        fullAuth.mcProfile.id,
+    const ret = datastorage.addMicrosoftAuthAccount(
+        fullAuth.mcProfile.id,
         fullAuth.mcToken.access_token,
-        fullAuth.mcProfile.name,);
-
-
+        fullAuth.mcProfile.name,
+        calculateExpiryDate(now, fullAuth.mcToken.expires_in),
+        fullAuth.accessToken.access_token,
+        fullAuth.accessToken.refresh_token,
+        calculateExpiryDate(now, fullAuth.accessToken.expires_in)
+    )
+    datastorage.save()
 
     return ret
 }
