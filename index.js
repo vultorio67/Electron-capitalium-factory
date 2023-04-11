@@ -5,6 +5,8 @@ const keyevents = require('key-events') // Also at window.keyevents.
 
 const { MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR, SHELL_OPCODE } = require('./src/js/ipcconstants')
 
+var minecraftAuth = require("minecraft-auth")
+let account = new minecraftAuth.CrackedAccount("vultorio");
 
 
 
@@ -25,6 +27,7 @@ function createWindow() {
         minWidth: 500,
         minHeight: 260,
         frame: false,
+        icon: path.join(__dirname, 'images/capitalium-logo.png'),
         webPreferences: {
             preload: path.join(__dirname, 'preloader.js'),
             nodeIntegration: true,
@@ -88,7 +91,8 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGIN, (ipcEvent, ...arguments_) => {
         backgroundColor: '#222222',
         width: 520,
         height: 600,
-        frame: true
+        frame: true,
+        icon: getIcon('capitalium-logo'),
     })
 
     msftAuthWindow.on('closed', () => {
@@ -135,5 +139,23 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
     app.quit();
 });
+
+
+function getIcon(filename){
+    let ext
+    switch(process.platform) {
+        case 'win32':
+            ext = 'ico'
+            break
+        case 'darwin':
+        case 'linux':
+        default:
+            ext = 'png'
+            break
+    }
+    console.log(__dirname, 'images', `${filename}.${ext}`)
+
+    return path.join(__dirname, 'images', `${filename}.${ext}`)
+}
 
 

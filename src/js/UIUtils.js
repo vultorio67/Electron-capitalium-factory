@@ -4,7 +4,8 @@ const VIEWS = {
     welcome: "#welcome",
     login_ask: "#loginask",
     wait: "#wait",
-    base: "#base"
+    base: "#base",
+    cracklogin: "#cracklogin"
 }
 
 // The currently shown view container.

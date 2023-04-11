@@ -209,3 +209,8 @@ exports.removeAuthAccount = function(uuid){
     return false
 }
 
+
+exports.getSelectedAccount = function(){
+    return config.authenticationDatabase[config.selectedAccount]
+}
+

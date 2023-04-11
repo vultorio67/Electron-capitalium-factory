@@ -8,3 +8,8 @@ microsoft.onclick = (e) => {
     }, 1000);
     
 }
+
+crack.onclick = (e) => {
+    switchView(getCurrentView(), VIEWS.cracklogin)
+    
+}

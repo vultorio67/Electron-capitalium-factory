@@ -89,6 +89,8 @@ async function fullMicrosoftAuthFlow(authCode) {
         const xstsResonse = await MicrosoftAuth.getXSTSToken(xblResponse.data)
     
         const mcTokenResponse = await MicrosoftAuth.getMCAccessToken(xstsResonse.data)
+
+        console.log("oui",mcTokenResponse)
     
         const mcProfileResponse = await MicrosoftAuth.getMCProfile(mcTokenResponse.data.access_token)
     
