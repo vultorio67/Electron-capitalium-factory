@@ -15,6 +15,8 @@ let account = new minecraftAuth.CrackedAccount("vultorio");
 var key = window.keyevents(document) // Default target is `document.body`
 key.on("keydown", function (e) {
 
+    alertOverlay();
+
     // Event contents are vkey values: https://www.npmjs.com/package/vkey
     if (getCurrentView() == VIEWS.welcome)
     {

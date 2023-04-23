@@ -5,7 +5,7 @@ const VIEWS = {
     login_ask: "#loginask",
     wait: "#wait",
     base: "#base",
-    cracklogin: "#cracklogin"
+    cracklogin: "#cracklogin",
 }
 
 // The currently shown view container.
@@ -33,6 +33,26 @@ function sleep (time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
   
+
+
+function alertOverlay()
+{
+    $('#msg').text("New Span text content");
+
+    $('.alert').addClass("show");
+
+    $('.alert').removeClass("hide");
+
+    $('.alert').addClass("showAlert");
+
+    setTimeout(function(){
+
+      $('.alert').removeClass("show");
+
+      $('.alert').addClass("hide");
+
+    },5000);
+}
 
 
 
