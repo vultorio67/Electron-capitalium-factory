@@ -35,9 +35,9 @@ function sleep (time) {
   
 
 
-function alertOverlay()
+function alertOverlay(msg)
 {
-    $('#msg').text("New Span text content");
+    $('#msg').text(msg);
 
     $('.alert').addClass("show");
 
@@ -51,7 +51,7 @@ function alertOverlay()
 
       $('.alert').addClass("hide");
 
-    },5000);
+    },4000);
 }
 
 
