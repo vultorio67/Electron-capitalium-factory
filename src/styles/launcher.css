@@ -4319,6 +4319,11 @@ waiting !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     background-color: #f5f7f9;
   box-shadow: 0 5px 15px rgba(255, 246, 122, 0.4);
 }
+.button-crack:focus{
+    width: 60px;
+    background-color: #44c08a;
+    border-radius: 50%;
+}
 
 #pageMessages {
     position: fixed;

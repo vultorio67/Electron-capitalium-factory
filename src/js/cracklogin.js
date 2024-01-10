@@ -5,5 +5,5 @@ const button    = document.getElementById('button-crack')
 
 
 button.onclick = (e) => {
-    ipcRenderer.send("close-app")
+   // ipcRenderer.send("close-app")
 }

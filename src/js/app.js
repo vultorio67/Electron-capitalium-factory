@@ -15,8 +15,6 @@ let account = new minecraftAuth.CrackedAccount("vultorio");
 var key = window.keyevents(document) // Default target is `document.body`
 key.on("keydown", function (e) {
 
-    alertOverlay("oui");
-
     // Event contents are vkey values: https://www.npmjs.com/package/vkey
     if (getCurrentView() == VIEWS.welcome)
     {
@@ -39,16 +37,26 @@ switchView("", VIEWS.welcome);
 // Bind reply for Microsoft Login.
 ipcRenderer.on(MSFT_OPCODE.REPLY_LOGIN, (_, ...arguments_) => {
 
+    console.log(arguments_[0])
 
-    
-    const queryMap = arguments_[1]
-    const viewOnClose = arguments_[2]
+    if (arguments_[0] == MSFT_REPLY_TYPE.ERROR)
+    {
+        alertOverlay("Error during the microsoft login please try again")
+        switchView(getCurrentView(), VIEWS.welcome)
+    }
+
+    else if(arguments_[0] == MSFT_REPLY_TYPE.SUCCESS)
+    {
+
+        const queryMap = arguments_[1]
+        const viewOnClose = arguments_[2]
 
 
-    const authCode = queryMap.code
-    authmanager.addMicrosoftAccount(authCode).then(value => {
-        switchView(getCurrentView(), VIEWS.base)
-    })
+        const authCode = queryMap.code
+        authmanager.addMicrosoftAccount(authCode).then(value => {
+            switchView(getCurrentView(), VIEWS.base)
+        })
+    }
     
     }
 )
