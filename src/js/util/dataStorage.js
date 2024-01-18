@@ -211,6 +211,24 @@ exports.removeAuthAccount = function(uuid){
 
 
 exports.getSelectedAccount = function(){
-    return config.authenticationDatabase[config.selectedAccount]
+    return config.selectedAccount
+}
+
+
+exports.defaultJavaConfig17 = function(ram, javaexecutable) {
+    config.javaConfig = {
+        minRAM: resolveSelectedRAM(ram),
+        maxRAM: resolveSelectedRAM(ram),
+        executable: javaexecutable,
+        jvmOptions: [
+            '-XX:+UnlockExperimentalVMOptions',
+            '-XX:+UseG1GC',
+            '-XX:G1NewSizePercent=20',
+            '-XX:G1ReservePercent=20',
+            '-XX:MaxGCPauseMillis=50',
+            '-XX:G1HeapRegionSize=32M'
+        ],
+    }
+    return config.javaConfig
 }
 

@@ -18,12 +18,13 @@ key.on("keydown", function (e) {
     // Event contents are vkey values: https://www.npmjs.com/package/vkey
     if (getCurrentView() == VIEWS.welcome)
     {
-        if(datastorage.getSelectedAccount() != null)
+        if(datastorage.getSelectedAccount() == null)
             {
                 switchView(getCurrentView(), VIEWS.login_ask)
             }
 
         else {
+            console.log(datastorage.getSelectedAccount())
             switchView(getCurrentView(), VIEWS.base)
         }
     }
