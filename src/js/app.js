@@ -3,6 +3,7 @@ const { ipcRenderer } = require('electron')
 
 const authmanager = require("./js/util/authManager")
 const datastorage = require('./js/util/dataStorage')
+const command = require('./js/util/command')
 
 const { AZURE_CLIENT_ID, MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR, SHELL_OPCODE } = require('./js/ipcconstants')
 
@@ -52,8 +53,7 @@ ipcRenderer.on(MSFT_OPCODE.REPLY_LOGIN, (_, ...arguments_) => {
         const queryMap = arguments_[1]
         const viewOnClose = arguments_[2]
 
-
-        const authCode = queryMap.code
+        const authCode = queryMap['code']
         authmanager.addMicrosoftAccount(authCode).then(value => {
             switchView(getCurrentView(), VIEWS.base)
         })

@@ -229,6 +229,6 @@ exports.defaultJavaConfig17 = function(ram, javaexecutable) {
             '-XX:G1HeapRegionSize=32M'
         ],
     }
-    return config.javaConfig
+    exports.save()
 }
 

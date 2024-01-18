@@ -160,7 +160,7 @@
     "mime-types": "^2.1.35",
     "mimic-response": "^1.0.1",
     "minecraft-auth": "^1.0.34",
-    "minecraft-launcher-core": "^3.16.18",
+    "minecraft-launcher-core": "^3.17.3",
     "minimatch": "^3.1.2",
     "minimist": "^1.2.8",
     "minipass": "^4.2.5",
