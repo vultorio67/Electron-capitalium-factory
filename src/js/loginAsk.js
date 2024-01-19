@@ -10,6 +10,6 @@ microsoft.onclick = (e) => {
 }
 
 crack.onclick = (e) => {
-    switchView(getCurrentView(), VIEWS.cracklogin)
+    switchView(getCurrentView(), VIEWS.userNameLogin)
     
 }

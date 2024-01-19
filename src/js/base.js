@@ -1,29 +1,60 @@
 const start = document.getElementById('start');
+const percent = document.getElementById('percent');
+const info = document.getElementById('info');
 
-const gameVersion = "1.20.1"
+const fs = require('fs');
 
-  // Fonction de callback
-  function gestionResultat(resultat) {
-    changerH1(resultat)
-  }
+const gameVersion = "1.20.1-forge-47.2.20"
+const type = "forge"
+
 
 start.onclick = (e) => {
     console.log('-----------------------------')
-      // Utilisation de la fonction asynchrone avec le callback
-  command.installVanilla(gestionResultat, gameVersion, datastorage.getDataDirectory());
 
+    const launcherDir = datastorage.getLauncherDirectory()
+    //console.log(datastorage.getSelectedAccount())
+
+    if(directoryExists(launcherDir+"/version/"+gameVersion))
+    {
+      console.log("the version is already donwload")
+    }
+    else {
+      command.install(gameVersion, launcherDir, type)
+    }
+
+
+    const selectedAccount = datastorage.getSelectedAccount()
+    var token = ""
+    if(datastorage.getType(selectedAccount) == "microsoft")
+    {
+      token = datastorage.getToken(selectedAccount)
+    }
+    else {
+      token = "default"
+    }
+
+    console.log(token)
+
+    const userName = datastorage.getUserName(selectedAccount)
+    const uuid = datastorage.getuuid(selectedAccount)
+
+    console.log(datastorage.getUserName(selectedAccount))
+    command.launchMinecraft(gameVersion, launcherDir, userName, uuid, token, "default", "2", "3")
     
 }
 
-function changerH1(inside) {
-    // Accéder à l'élément h1 par son identifiant
-    var monH1 = document.getElementById("monH1");
-  
-    // Vérifier si l'élément existe
-    if (monH1) {
-      // Changer le contenu de l'élément h1
-      monH1.textContent = inside;
+
+
+function directoryExists(path) {
+  try {
+    return fs.statSync(path).isDirectory();
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      // The directory does not exist
+      return false;
     } else {
-      console.error("Élément h1 introuvable");
+      // Other errors (e.g., permission issues)
+      throw error;
     }
   }
+}

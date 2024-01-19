@@ -192,6 +192,20 @@ exports.addMicrosoftAuthAccount = function(uuid, accessToken, name, mcExpires, m
 }
 
 
+
+exports.addUserNameAccount = function(name, uuid, date) {
+    config.selectedAccount = uuid
+    config.authenticationDatabase[uuid] = {
+        type: 'userName',
+        username: name.trim(),
+        uuid: uuid.trim(),
+        date : date,
+    }
+    exports.save()
+    return config.authenticationDatabase[uuid]
+}
+
+
 exports.removeAuthAccount = function(uuid){
     if(config.authenticationDatabase[uuid] != null){
         delete config.authenticationDatabase[uuid]
@@ -210,8 +224,51 @@ exports.removeAuthAccount = function(uuid){
 }
 
 
+exports.getType = function(uuid){
+    return config.authenticationDatabase[uuid].type
+}
+
+
 exports.getSelectedAccount = function(){
     return config.selectedAccount
+}
+
+
+exports.getUserName = function(uuid){
+    return config.authenticationDatabase[uuid].username
+}
+
+exports.getuuid = function(uuid){
+    return config.authenticationDatabase[uuid].uuid
+}
+
+exports.getToken = function(uuid){
+    return config.authenticationDatabase[uuid].accessToken
+}
+
+
+exports.setSelectedAccount = function(uuid){
+    const authAcc = config.authenticationDatabase[uuid]
+    if(authAcc != null) {
+        config.selectedAccount = uuid
+    }
+    return authAcc
+}
+
+
+exports.getAuthDatabase = function(){
+    return config.authenticationDatabase
+}
+
+
+/**
+ * Retrieve the launcher's Client Token.
+ * There is no default client token.
+ * 
+ * @returns {string} The launcher's Client Token.
+ */
+exports.getClientToken = function(){
+    return config.clientToken
 }
 
 

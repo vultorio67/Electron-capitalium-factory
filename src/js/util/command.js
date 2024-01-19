@@ -1,92 +1,199 @@
 const currentDirectory = process.cwd();
 const { spawn } = require('child_process');
+const dataStorage = require('./dataStorage');
 
-const EventEmitter = require('events');
-
-class ExeEmitter extends EventEmitter {}
-
-exports.installVanilla = async function(callback, version, path) {
-    console.log(version, path)
-    // Chemin vers le fichier .exe à exécuter
 const exePath = currentDirectory+"/main.exe";
 
-// Arguments à passer au fichier .exe
-// --install --version 1.20.1-47.2.20 --type forge --emplacement C:\Minecraft
+exports.install = function(version, path, type) {
 
-const args = [
-  '--install', 
-  '--version', version,
-  '--type', 'vanilla',
-  '--emplacement', datastorage.getLauncherDirectory()
-  // Ajoutez d'autres paires clé-valeur selon vos besoins
-];
+  var exec = require('child_process').exec;
+  
+  // Arguments à passer au fichier .exe
+  // --install --version 1.20.1-47.2.20 --type forge --emplacement C:\Minecraft
 
-const exeEmitter = executerFichierExe(exePath, args);
+  const args = [
+    '--install', 
+    '--version', version,
+    '--type', type,
+    '--emplacement', path,
+    // Ajoutez d'autres paires clé-valeur selon vos besoins
+  ];
 
-// Écoutez l'événement pour chaque nouvelle ligne
-exeEmitter.on('nouvelleLigne', (ligne) => {
-    callback(ligne)
-  //alert(ligne)
-  // Ajoutez votre logique pour traiter chaque nouvelle ligne ici
-});
+  const argsString = args.join(' ');
 
-// Écoutez l'événement de fin d'exécution
-exeEmitter.on('finExecution', (resultat) => {
-  console.log('Fin de l\'exécution :', resultat);
-  // Ajoutez votre logique pour traiter la fin d'exécution ici
-});
+  console.log(argsString);
 
-// Écoutez l'événement d'erreur
-exeEmitter.on('erreur', (erreur) => {
-  console.error('Erreur :', erreur);
-  // Ajoutez votre logique pour traiter les erreurs ici
-});
+  var result = '';
+
+  let sortieStandard = '';
+
+  console.log(exePath +" "+ argsString)
+
+  var child = spawn(exePath, args);
+  var result = ""
+
+  child.stdout.on('data', function(data) {
+
+    result = result+data
+
+    sortieStandard += data;
+    const lignes = sortieStandard.split('\n');
+    sortieStandard = lignes.pop(); // La dernière ligne incomplète (si elle existe) est stockée pour la prochaine itération
+
+    // Émet un événement pour chaque ligne complète
+    lignes.forEach((ligne) => print(ligne));
+
+  });
+
+  child.stderr.on('data', (data) => {
+    print("error")
+    console.error(`Error Output: ${data}`);
+  });
+
+  child.on('close', function() {
+      console.log('done');
+      console.log(result);
+  });
+
+  child.on('close', (code) => {
+    if (code === 0) {
+      console.log('Child process finished correctly.');
+    } else {
+      console.error(`Child process exited with code ${code}. There might be an error.`);
+      print("error")
+    }
+  });
 
 
 }
 
-function executerFichierExe(cheminFichierExe, arguments) {
-    const exeEmitter = new ExeEmitter();
-  
-    const childProcess = spawn(cheminFichierExe, arguments, { stdio: 'pipe', encoding: 'utf-8' });
-  
-    // Accumule la sortie standard
-    let sortieStandard = '';
-  
-    // Événement pour la sortie standard
-    childProcess.stdout.on('data', (data) => {
-      sortieStandard += data;
-      const lignes = sortieStandard.split('\n');
-      sortieStandard = lignes.pop(); // La dernière ligne incomplète (si elle existe) est stockée pour la prochaine itération
-  
-      // Émet un événement pour chaque ligne complète
-      lignes.forEach((ligne) => exeEmitter.emit('nouvelleLigne', ligne));
-  
-      //console.log(`Sortie de l'application : ${data}`);
-    });
-  
-    // Événement pour la sortie d'erreur
-    childProcess.stderr.on('data', (data) => {
-      console.error(`Erreur de l'application : ${data}`);
-      // Vous pouvez également émettre un événement d'erreur ici
-    });
-  
-    // Événement de fin d'exécution
-    childProcess.on('close', (code) => {
-      console.log(`Processus fils terminé avec le code de sortie : ${code}`);
-      exeEmitter.emit('finExecution', { sortieStandard, code });
-    });
-  
-    // Gestion d'éventuelles erreurs
-    childProcess.on('error', (error) => {
-      console.error(`Erreur lors du lancement du processus : ${error.message}`);
-      exeEmitter.emit('erreur', error);
-    });
-  
-    return exeEmitter;
-  }
 
-async function installForge(version, path)
+exports.launchMinecraft = function(version, path, userName, uuid, token, javaExcutable, ram_min, ram_max)
 {
+
+  var exec = require('child_process').exec;
+  
+  // Arguments à passer au fichier .exe
+  // --install --version 1.20.1-47.2.20 --type forge --emplacement C:\Minecraft
+
+  const args = [
+    '--launch', 
+    '--version', version,
+    '--emplacement', path,
+    '--name', userName,
+    '--uuid', uuid,
+    '--token', token,
+    '--javaExecutable', javaExcutable,
+    '--ramMin', ram_min,
+    '--ramMax', ram_max
+    // Ajoutez d'autres paires clé-valeur selon vos besoins
+  ];
+
+  const argsString = args.join(' ');
+
+  var result = '';
+
+  let sortieStandard = '';
+
+  console.log(exePath +" "+ argsString)
+
+  var child = spawn(exePath, args);
+  var result = ""
+
+  child.stdout.on('data', function(data) {
+
+    result = result+data
+
+    sortieStandard += data;
+    const lignes = sortieStandard.split('\n');
+    sortieStandard = lignes.pop(); // La dernière ligne incomplète (si elle existe) est stockée pour la prochaine itération
+
+    // Émet un événement pour chaque ligne complète
+    //lignes.forEach((ligne) => executeCommand);
+
+  });
+
+  child.stderr.on('data', (data) => {
+    print("error")
+    console.error(`Error Output: ${data}`);
+  });
+
+  child.on('close', function() {
+    executeCommand(result)
+  });
     
+}
+
+
+
+function print(text)
+{
+  if(text.includes("percent"))
+  {
+    var ret = text.replace('percent:','');
+
+    percent.textContent = ret
+  }
+  else{
+      info.textContent = text;
+  }
+}
+
+var sortieStandard
+
+function executeCommand(command)
+{
+
+  //console.error(command)
+
+  let validJsonString = command.replace(/'/g, '"');
+
+  let args = JSON.parse(validJsonString);
+
+  console.error(args)
+
+  const javaEx = args[0]
+
+  //delete the javaex from the list
+  args.splice(0,1)
+  //command[0].shift
+
+  console.log(javaEx)
+  console.log(args)
+
+  const child = spawn(javaEx, args);
+  var result = ""
+
+  child.stdout.on('data', function(data) {
+
+    result = result+data
+
+    sortieStandard += data;
+    const lignes = sortieStandard.split('\n');
+    sortieStandard = lignes.pop(); // La dernière ligne incomplète (si elle existe) est stockée pour la prochaine itération
+
+    // Émet un événement pour chaque ligne complète
+    lignes.forEach((ligne) => console.log(`\x1b[31m[Minecraft]\x1b[0m ${ligne}`));
+
+  });
+
+  child.stderr.on('data', (data) => {
+    print("error")
+    console.error(`Error Output: ${data}`);
+  });
+
+  child.on('close', function() {
+      console.log('done');
+      console.log(result);
+  });
+
+  child.on('close', (code) => {
+    if (code === 0) {
+      console.log('Child process finished correctly.');
+    } else {
+      console.error(`Child process exited with code ${code}. There might be an error.`);
+      print("error")
+    }
+  });
+
 }
