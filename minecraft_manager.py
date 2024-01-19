@@ -58,11 +58,20 @@ def installer_version(version, type_installe, emplacement):
         minecraft_launcher_lib.forge.install_forge_version(version, emplacement, callback=callback)
 
 def lancer_version(version, emplacement, name, uuid, token, java_executable, ram_min, ram_max):
-    options = {
-        "username": name,
-        "uuid": uuid,
-        "token": token,
-    }
+
+    if token == "default":
+        options = {
+            "username": name,
+            "uuid": uuid,
+            "token": "",
+        }
+
+    else:
+        options = {
+            "username": name,
+            "uuid": uuid,
+            "token": token,
+        }
 
     if java_executable == "default":
         pass
@@ -74,6 +83,7 @@ def lancer_version(version, emplacement, name, uuid, token, java_executable, ram
     minecraft_command = minecraft_launcher_lib.command.get_minecraft_command(version, emplacement,
                                                                              options)
     print(minecraft_command)
+    subprocess.call(minecraft_command)
 
 # Configuration de l'analyseur d'arguments
 parser = argparse.ArgumentParser(description="Programme Python pour installer et lancer des versions de Minecraft.")
@@ -109,5 +119,4 @@ elif args.launch:
         print("L'option --launch nécessite les arguments --version, --emplacement, --name, --uuid, --token, --javaExecutable, --ramMin et --ramMax.")
 else:
     print("Aucune option spécifiée. Utilisez --install ou --launch.")
-
 

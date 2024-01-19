@@ -4,9 +4,9 @@ const dataStorage = require('./dataStorage');
 
 const exePath = currentDirectory+"/main.exe";
 
-exports.install = function(version, path, type) {
+exports.install = async function(version, path, type) {
 
-  var exec = require('child_process').exec;
+  return new Promise((resolve) => {
   
   // Arguments à passer au fichier .exe
   // --install --version 1.20.1-47.2.20 --type forge --emplacement C:\Minecraft
@@ -51,24 +51,29 @@ exports.install = function(version, path, type) {
   });
 
   child.on('close', function() {
-      console.log('done');
-      console.log(result);
+    resolve();
   });
+
+
 
   child.on('close', (code) => {
     if (code === 0) {
       console.log('Child process finished correctly.');
+      console.log(result)
     } else {
+      console.log(result)
       console.error(`Child process exited with code ${code}. There might be an error.`);
       print("error")
     }
   });
 
+})
+
 
 }
 
 
-exports.launchMinecraft = function(version, path, userName, uuid, token, javaExcutable, ram_min, ram_max)
+exports.launchMinecraft = async function(version, path, userName, uuid, token, javaExcutable, ram_min, ram_max)
 {
 
   var exec = require('child_process').exec;
