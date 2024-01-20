@@ -4467,6 +4467,7 @@ waiting !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   .type{
     display: block;
+    opacity: 0;
     width: 20%;
     padding: 0.5%;
     position: fixed;
@@ -4481,6 +4482,7 @@ waiting !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     transition: 0.6s;
     background-color: #c9bd20;
     border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    transition: opacity 0.5s;
   }
   
   
@@ -4489,11 +4491,19 @@ waiting !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     top: 87%;
     box-shadow: 0 10px 40px rgba(92, 157, 182, 0.637);
   }
+  
+  .down{
+    top: 85%;
+    left: 80%;
+    display: block;
+    width: 20%;
+    padding: 0.5%;
+    position: fixed;
+    
+  }
 
 
   .playButton {
-    top: 90%;
-    left: 85%;
     padding: 20px;
     font-size: 1.5em;
     border: none;
@@ -4508,3 +4518,42 @@ waiting !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     background-color: #e67e22; /* Jaune or plus foncé */
     transform: scale(1.1);
 }
+
+
+
+
+@keyframes zoomIn {
+    from {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* Zoom Out */
+  @keyframes zoomOut {
+    from {
+      transform: scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+  }
+  
+  /* Appliquer les styles à l'élément à animer */
+  .animated-element {
+    transition: transform 0.5s, opacity 0.5s;
+  }
+  
+  .zoom-in {
+    animation: zoomIn 0.5s ease-in-out;
+  }
+  
+  .zoom-out {
+    animation: zoomOut 0.5s ease-in-out;
+  }

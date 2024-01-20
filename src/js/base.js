@@ -186,3 +186,19 @@ async function getForgeVersions() {
  
 }
 
+
+
+//supprime l'affichage du type si capitalium factory
+document.getElementById('version').addEventListener('change', function() {
+  alert(command.getIsLaunch())
+  var versionSelect = document.getElementById('version');
+  var typeSelect = document.getElementById('type');
+  var selectorsContainer = document.getElementById('selectors-container');
+  if (versionSelect.value == 'capitalium-factory') {
+    typeSelect.style.opacity = '0';
+    typeSelect.style.pointerEvents = 'none';
+  } else {
+    typeSelect.style.opacity = '1';
+    typeSelect.style.pointerEvents = 'auto';
+  }
+});

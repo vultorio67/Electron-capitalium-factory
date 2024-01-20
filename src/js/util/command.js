@@ -4,7 +4,19 @@ const dataStorage = require('./dataStorage');
 
 const exePath = currentDirectory+"/main.exe";
 
+//const start = document.getElementById('start'); // Remplacez 'myElement' par l'id de votre élément
+
+
+var isLaunch = false;
+
 exports.install = async function(version, path, type) {
+
+  if(isLaunch==false)
+  {
+    applyZoomEffect(start, 'zoom-out');
+  }
+
+  isLaunch = true;
 
   return new Promise((resolve) => {
   
@@ -76,6 +88,8 @@ exports.install = async function(version, path, type) {
 exports.launchMinecraft = async function(version, path, userName, uuid, token, javaExcutable, ram_min, ram_max)
 {
 
+  isLaunch = true;
+
   var exec = require('child_process').exec;
   
   // Arguments à passer au fichier .exe
@@ -102,28 +116,28 @@ exports.launchMinecraft = async function(version, path, userName, uuid, token, j
 
   console.log(exePath +" "+ argsString)
 
-  var child = spawn(exePath, args);
+  var child1 = spawn(exePath, args);
   var result = ""
 
-  child.stdout.on('data', function(data) {
+  child1.stdout.on('data', function(data) {
 
-    result = result+data
+  result = result+data
 
     sortieStandard += data;
     const lignes = sortieStandard.split('\n');
     sortieStandard = lignes.pop(); // La dernière ligne incomplète (si elle existe) est stockée pour la prochaine itération
 
     // Émet un événement pour chaque ligne complète
-    //lignes.forEach((ligne) => executeCommand);
+    lignes.forEach((ligne) => console.log(ligne));
 
   });
 
-  child.stderr.on('data', (data) => {
+  child1.stderr.on('data', (data) => {
     print("error")
     console.error(`Error Output: ${data}`);
   });
 
-  child.on('close', function() {
+  child1.on('close', function() {
     executeCommand(result)
   });
     
@@ -148,6 +162,12 @@ var sortieStandard
 
 function executeCommand(command)
 {
+  if(isLaunch==false)
+  {
+    applyZoomEffect(start, 'zoom-out');
+  }
+
+  isLaunch = true;
 
   //console.error(command)
 
@@ -193,6 +213,8 @@ function executeCommand(command)
   });
 
   child.on('close', (code) => {
+      applyZoomEffect(start, 'zoom-in');
+    isLaunch = false
     if (code === 0) {
       console.log('Child process finished correctly.');
     } else {
@@ -202,3 +224,23 @@ function executeCommand(command)
   });
 
 }
+
+
+
+exports.getIsLaunch = function()
+{
+  alert(isLaunch)
+  return isLaunch;
+}
+
+
+// Fonction pour appliquer l'effet de zoom
+function applyZoomEffect(element, effect) {
+  element.classList.add(effect);
+  // Supprimer la classe après la fin de l'animation
+  setTimeout(() => {
+    element.classList.remove(effect);
+  }, 500); // 500 ms, correspondant à la durée de l'animation
+}
+
+
