@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@xmcl/curseforge": "^2.1.1",
     "7zip-bin": "^5.1.1",
     "abbrev": "^1.1.1",
     "adm-zip": "^0.4.16",
