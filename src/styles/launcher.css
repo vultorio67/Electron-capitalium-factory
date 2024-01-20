@@ -4434,3 +4434,77 @@ waiting !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     color: #ce8500;
     font-size: 22px;
     line-height: 40px;
+  }
+
+
+
+
+  .versiong{
+    display: block;
+    width: 20%;
+    padding: 0.5%;
+    position: fixed;
+    top: 88%;
+    left: 40%;
+    font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    border-radius: 100px;
+    transition: 0.6s;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  
+    background-color: #c9bd20;
+  }
+  
+  .versiong:hover {
+    border-radius: 1px;
+    top: 87%;
+    box-shadow: 0 10px 40px rgba(61, 95, 109, 0.637);
+  
+  }
+
+
+  .type{
+    display: block;
+    width: 20%;
+    padding: 0.5%;
+    position: fixed;
+    top: 88%;
+    left: 10%;
+    font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    border-radius: 100px;
+    border-color: aquamarine;
+    transition: 0.6s;
+    background-color: #c9bd20;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  }
+  
+  
+  .type:hover {
+    border-radius: 1px;
+    top: 87%;
+    box-shadow: 0 10px 40px rgba(92, 157, 182, 0.637);
+  }
+
+
+  .playButton {
+    top: 90%;
+    left: 85%;
+    padding: 20px;
+    font-size: 1.5em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #f39c12; /* Jaune or */
+    color: #fff;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.playButton:hover {
+    background-color: #e67e22; /* Jaune or plus foncé */
+    transform: scale(1.1);
+}
