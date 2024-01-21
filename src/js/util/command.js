@@ -10,7 +10,6 @@ const exePath = currentDirectory+"/main.exe";
 var isLaunch = false;
 
 exports.install = async function(version, path, type) {
-
   if(isLaunch==false)
   {
     applyZoomEffect(start, 'zoom-out');
@@ -88,6 +87,11 @@ exports.install = async function(version, path, type) {
 exports.launchMinecraft = async function(version, path, userName, uuid, token, javaExcutable, ram_min, ram_max)
 {
 
+  if(isLaunch==false)
+  {
+    applyZoomEffect(start, 'zoom-out');
+  }
+
   isLaunch = true;
 
   var exec = require('child_process').exec;
@@ -162,11 +166,6 @@ var sortieStandard
 
 function executeCommand(command)
 {
-  if(isLaunch==false)
-  {
-    applyZoomEffect(start, 'zoom-out');
-  }
-
   isLaunch = true;
 
   //console.error(command)
@@ -229,7 +228,6 @@ function executeCommand(command)
 
 exports.getIsLaunch = function()
 {
-  alert(isLaunch)
   return isLaunch;
 }
 
@@ -239,7 +237,7 @@ function applyZoomEffect(element, effect) {
   element.classList.add(effect);
   // Supprimer la classe après la fin de l'animation
   setTimeout(() => {
-    element.classList.remove(effect);
+    element.classList.add(effect);
   }, 500); // 500 ms, correspondant à la durée de l'animation
 }
 

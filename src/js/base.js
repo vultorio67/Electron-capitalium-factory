@@ -190,7 +190,6 @@ async function getForgeVersions() {
 
 //supprime l'affichage du type si capitalium factory
 document.getElementById('version').addEventListener('change', function() {
-  alert(command.getIsLaunch())
   var versionSelect = document.getElementById('version');
   var typeSelect = document.getElementById('type');
   var selectorsContainer = document.getElementById('selectors-container');
