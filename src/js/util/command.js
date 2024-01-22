@@ -1,6 +1,6 @@
 const currentDirectory = process.cwd();
 const { spawn } = require('child_process');
-const dataStorage = require('./dataStorage');
+//const dataStorage = require('./dataStorage');
 
 const exePath = currentDirectory+"/main.exe";
 
