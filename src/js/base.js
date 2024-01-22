@@ -50,6 +50,42 @@ start.onclick = async (e) => {
     var gameVersion = versionList.value;
     var type = typeElement.value;
 
+    if(gameVersion=="capitalium-factory")
+    {
+      const apiUrl = 'https://www.capitalium-factory.fr/api/get_information';
+
+      axios.get(apiUrl)
+        .then(response => {
+          // Les données de l'API sont disponibles dans response.data
+          console.log("version : "+ response.data.version)
+          console.log("type : "+ response.data.type)
+
+          gameVersion = response.data.version
+          type = response.data.type
+
+          if(type=="forge"){
+
+            installGameVersion = gameVersion
+            gameVersion = gameVersion.replace('-', '-forge-')
+    
+            launch(installGameVersion, gameVersion);
+    
+    
+      
+          }else{
+            installGameVersion = gameVersion
+            launch(installGameVersion, gameVersion);
+          }
+
+        })
+        .catch(error => {
+          console.error('Erreur lors de la récupération des données de l\'API:', error.message);
+        });
+
+    } 
+
+    else {
+
     if(type=="forge"){
 
 
@@ -69,6 +105,7 @@ start.onclick = async (e) => {
       installGameVersion = gameVersion
       launch(installGameVersion, gameVersion);
     }
+  }
 }
 
 
